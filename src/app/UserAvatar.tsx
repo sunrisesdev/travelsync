@@ -1,3 +1,4 @@
+import { SignOut } from '@/app/SignOut';
 import { getLastStations } from '@/traewelling-sdk/stations';
 import { auth } from '../auth';
 
@@ -17,6 +18,7 @@ export default async function UserAvatar() {
           {stations?.map((station) => <li key={station.id}>{station.name}</li>)}
         </ul>
       )}
+      <SignOut />
     </div>
   );
 }

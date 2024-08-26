@@ -1,5 +1,4 @@
 import NextAuth, { type DefaultSession } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
 
 declare module 'next-auth' {
   interface Session {
@@ -9,7 +8,15 @@ declare module 'next-auth' {
   }
 
   interface User {
+    displayName: string;
     username: string;
+    profilePicture: string;
+    privateProfile: boolean;
+    preventIndex: boolean;
+    likes_enabled: boolean;
+    language: string;
+    defaultStatusVisibility: number;
+    roles: string[];
   }
 }
 
@@ -48,17 +55,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: process.env.TRAEWELLING_CLIENT_ID,
       clientSecret: process.env.TRAEWELLING_CLIENT_SECRET,
       profile({ data: profile }) {
+        console.log(profile);
+
         return {
           id: profile.id,
+          defaultStatusVisibility: profile.defaultStatusVisibility,
+          displayName: profile.displayName,
+          language: profile.language,
           name: profile.displayName,
           username: profile.username,
-          email: profile.email,
-          image: profile.profilePicture,
-          mastodonUrl: profile.mastodonUrl,
+          profilePicture: profile.profilePicture,
           privateProfile: profile.privateProfile,
           preventIndex: profile.preventIndex,
-          language: profile.language,
-          defaultStatusVisibility: profile.defaultStatusVisibility,
+          likes_enabled: profile.likes_enabled,
+          roles: profile.roles,
         };
       },
     },
@@ -75,7 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.username = user.username;
         token.displayName = user.name;
         // token.id = user.id as number;
-        token.picture = user.image;
+        token.picture = user.profilePicture;
       }
 
       token.accessToken = account?.access_token || token.accessToken;
