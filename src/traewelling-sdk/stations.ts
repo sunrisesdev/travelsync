@@ -1,5 +1,5 @@
 import { getTrwlAPI } from './api';
-import { Station, type TrwlResponse } from './types';
+import type { TrwlAPIResponse, TrwlStation } from './types/traewelling';
 
 export async function findStationByLocation(
   latitude: number,
@@ -15,7 +15,7 @@ export async function findStationByLocation(
           longitude,
         },
       })
-      .json<TrwlResponse<Station>>();
+      .json<TrwlAPIResponse<TrwlStation>>();
 
     return data;
   } catch (error) {
@@ -29,7 +29,7 @@ export async function findStationsByQuery(query: string) {
   try {
     const { data } = await (await getTrwlAPI())
       .get(`trains/stations/autocomplete/${sanitizedQuery}`)
-      .json<TrwlResponse<Station[]>>();
+      .json<TrwlAPIResponse<TrwlStation[]>>();
 
     return data;
   } catch (error) {
@@ -41,7 +41,7 @@ export async function getLastStations() {
   try {
     const { data } = await (await getTrwlAPI())
       .get('trains/station/history')
-      .json<TrwlResponse<Station[]>>();
+      .json<TrwlAPIResponse<TrwlStation[]>>();
 
     return data;
   } catch (error) {

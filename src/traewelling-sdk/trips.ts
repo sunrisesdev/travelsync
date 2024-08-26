@@ -1,10 +1,15 @@
 import { getTrwlAPI } from './api';
-import type { HAFASTrip } from './hafasTypes';
-import type { Station, TransportationType, Trip, TrwlResponse } from './types';
+import type { HAFASTrip } from './types/hafas';
+import type {
+  TrwlAPIResponse,
+  TrwlStation,
+  TrwlTravelType,
+  TrwlTrip,
+} from './types/traewelling';
 
-type DeparturesResponse = TrwlResponse<HAFASTrip[]> & {
+type DeparturesResponse = TrwlAPIResponse<HAFASTrip[]> & {
   meta: {
-    station: Station;
+    station: TrwlStation;
     times: {
       next: string;
       now: string;
@@ -15,7 +20,7 @@ type DeparturesResponse = TrwlResponse<HAFASTrip[]> & {
 
 export async function getDeparturesFromStation(
   trwlStationId: string,
-  options?: { departureAt?: Date; transportationType?: TransportationType }
+  options?: { departureAt?: Date; transportationType?: TrwlTravelType }
 ) {
   const searchParams = new URLSearchParams();
 
@@ -58,7 +63,7 @@ export async function getTrip(
           start: originStationEvaId,
         },
       })
-      .json<TrwlResponse<Trip>>();
+      .json<TrwlAPIResponse<TrwlTrip>>();
 
     return data;
   } catch (error) {
