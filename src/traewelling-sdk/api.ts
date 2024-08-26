@@ -1,5 +1,5 @@
-import ky from "ky";
+import ky from 'ky';
 
 export const trwlAPI = ky.create({
-  prefixUrl: "https://traewelling.de/api/v1",
+  prefixUrl: 'https://traewelling.de/api/v1',
 });

@@ -1,5 +1,5 @@
-import { trwlAPI } from "./api";
-import { Station, type TrwlResponse } from "./types";
+import { trwlAPI } from './api';
+import { Station, type TrwlResponse } from './types';
 
 export async function findStationByLocation(
   latitude: number,
@@ -7,7 +7,7 @@ export async function findStationByLocation(
 ) {
   try {
     const { data } = await trwlAPI
-      .get("trains/stations/nearby", {
+      .get('trains/stations/nearby', {
         searchParams: {
           latitude,
           longitude,
@@ -20,7 +20,7 @@ export async function findStationByLocation(
 }
 
 export async function findStationsByQuery(query: string) {
-  const sanitizedQuery = query.replaceAll("/", " ");
+  const sanitizedQuery = query.replaceAll('/', ' ');
 
   try {
     const { data } = await trwlAPI
@@ -34,7 +34,7 @@ export async function findStationsByQuery(query: string) {
 export async function getLastStations() {
   try {
     const { data } = await trwlAPI
-      .get("trains/stations/history")
+      .get('trains/stations/history')
       .json<TrwlResponse<Station[]>>();
 
     return data;
