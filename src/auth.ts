@@ -56,8 +56,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientId: process.env.TRAEWELLING_CLIENT_ID,
       clientSecret: process.env.TRAEWELLING_CLIENT_SECRET,
       profile({ data: profile }) {
-        console.log(profile);
-
         return {
           id: profile.id,
           defaultStatusVisibility: profile.defaultStatusVisibility,
@@ -80,6 +78,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: '/login',
   },
+
   callbacks: {
     jwt: async ({ token, account, user }) => {
       if (user) {
