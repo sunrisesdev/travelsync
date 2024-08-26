@@ -1,6 +1,6 @@
 import { getTrwlAPI } from './api';
 import type { HAFASTrip } from './hafasTypes';
-import type { Station, TransportationType, TrwlResponse } from './types';
+import type { Station, TransportationType, Trip, TrwlResponse } from './types';
 
 type DeparturesResponse = TrwlResponse<HAFASTrip[]> & {
   meta: {
@@ -13,7 +13,7 @@ type DeparturesResponse = TrwlResponse<HAFASTrip[]> & {
   };
 };
 
-export async function getTripsFromStation(
+export async function getDeparturesFromStation(
   trwlStationId: string,
   options?: { departureAt?: Date; transportationType?: TransportationType }
 ) {
@@ -28,7 +28,7 @@ export async function getTripsFromStation(
   }
 
   try {
-    const { data: trips, meta } = await (
+    const { data: departures, meta } = await (
       await getTrwlAPI()
     )
       .get(`station/${trwlStationId}/departures`, {
@@ -36,7 +36,31 @@ export async function getTripsFromStation(
       })
       .json<DeparturesResponse>();
 
-    return { trips, meta };
+    return { trips: departures, meta };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getTrip(
+  hafasTripId: string,
+  lineName: string,
+  originStationEvaId: string
+) {
+  try {
+    const { data } = await (
+      await getTrwlAPI()
+    )
+      .get(`trains/trip`, {
+        searchParams: {
+          hafasTripId,
+          lineName,
+          start: originStationEvaId,
+        },
+      })
+      .json<TrwlResponse<Trip>>();
+
+    return data;
   } catch (error) {
     console.log(error);
   }
