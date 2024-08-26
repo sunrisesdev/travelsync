@@ -12,6 +12,7 @@
     "babel-plugin-react-compiler": "0.0.0-experimental-48eb8f4-20240822",
     "clsx": "2.1.1",
     "next": "15.0.0-rc.0",
+    "next-auth": "^5.0.0-beta.20",
     "normalize.css": "8.0.1",
     "react": "19.0.0-rc-f994737d14-20240522",
     "react-dom": "19.0.0-rc-f994737d14-20240522",
