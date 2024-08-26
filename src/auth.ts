@@ -1,4 +1,23 @@
-import NextAuth from 'next-auth';
+import NextAuth, { type DefaultSession } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      accessToken: string;
+    } & DefaultSession['user'];
+  }
+
+  interface User {
+    username: string;
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    accessToken: string;
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -65,7 +84,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     session: async ({ session, token, user }) => {
-      //   session.user.accessToken = token.accessToken;
+      session.user.accessToken = token.accessToken;
       //   session.user.refreshToken = token.refreshToken;
       //   session.user.username = token.username;
       //   session.user.name = token.displayName;

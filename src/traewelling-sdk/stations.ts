@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { trwlAPI } from './api';
 import { Station, type TrwlResponse } from './types';
 
@@ -32,11 +33,19 @@ export async function findStationsByQuery(query: string) {
 }
 
 export async function getLastStations() {
+  const session = await auth();
+
   try {
     const { data } = await trwlAPI
-      .get('trains/stations/history')
+      .get('trains/station/history', {
+        headers: {
+          Authorization: `Bearer ${session?.user.accessToken}`,
+        },
+      })
       .json<TrwlResponse<Station[]>>();
 
     return data;
-  } catch {}
+  } catch (error) {
+    console.log(error);
+  }
 }
