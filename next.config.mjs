@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
+
   experimental: {
-    reactCompiler: true,
-    ppr: 'incremental',
+    // reactCompiler: true,
     after: true,
   },
 };
