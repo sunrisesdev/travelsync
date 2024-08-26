@@ -1,3 +1,4 @@
+import { SignOut } from '@/app/SignOut';
 import { getLastStations } from '@/traewelling-sdk/stations';
 import Link from 'next/link';
 import { auth } from '../auth';
@@ -22,6 +23,7 @@ export default async function UserAvatar() {
           ))}
         </ul>
       )}
+      <SignOut />
     </div>
   );
 }
