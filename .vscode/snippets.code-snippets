@@ -1,0 +1,9 @@
+{
+    "Import Module Styles": {
+      "body": ["import styles from './${1:$TM_FILENAME_BASE}.module.scss';"],
+      "description": "Adds an import statement for the current components module stylesheet",
+      "isFileTemplate": false,
+      "prefix": "ims",
+      "scope": "javascriptreact, typescriptreact",
+    },
+  }
