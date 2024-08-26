@@ -1,5 +1,4 @@
-import { auth } from '@/auth';
-import { trwlAPI } from './api';
+import { getTrwlAPI } from './api';
 import { Station, type TrwlResponse } from './types';
 
 export async function findStationByLocation(
@@ -7,7 +6,9 @@ export async function findStationByLocation(
   longitude: number
 ) {
   try {
-    const { data } = await trwlAPI
+    const { data } = await (
+      await getTrwlAPI()
+    )
       .get('trains/stations/nearby', {
         searchParams: {
           latitude,
@@ -17,31 +18,29 @@ export async function findStationByLocation(
       .json<TrwlResponse<Station>>();
 
     return data;
-  } catch {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function findStationsByQuery(query: string) {
   const sanitizedQuery = query.replaceAll('/', ' ');
 
   try {
-    const { data } = await trwlAPI
+    const { data } = await (await getTrwlAPI())
       .get(`trains/stations/autocomplete/${sanitizedQuery}`)
       .json<TrwlResponse<Station[]>>();
 
     return data;
-  } catch {}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export async function getLastStations() {
-  const session = await auth();
-
   try {
-    const { data } = await trwlAPI
-      .get('trains/station/history', {
-        headers: {
-          Authorization: `Bearer ${session?.user.accessToken}`,
-        },
-      })
+    const { data } = await (await getTrwlAPI())
+      .get('trains/station/history')
       .json<TrwlResponse<Station[]>>();
 
     return data;

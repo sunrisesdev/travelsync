@@ -10,3 +10,14 @@ export type Station = {
   name: string;
   rilIdentifier?: string;
 };
+
+export type TransportationType =
+  | 'bus'
+  | 'express'
+  | 'ferry'
+  | 'plane'
+  | 'regional'
+  | 'suburban'
+  | 'subway'
+  | 'taxi'
+  | 'tram';

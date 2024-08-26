@@ -1,4 +1,5 @@
 import { getLastStations } from '@/traewelling-sdk/stations';
+import Link from 'next/link';
 import { auth } from '../auth';
 
 export default async function UserAvatar() {
@@ -14,7 +15,11 @@ export default async function UserAvatar() {
 
       {stations?.length && (
         <ul>
-          {stations?.map((station) => <li key={station.id}>{station.name}</li>)}
+          {stations?.map((station) => (
+            <li key={station.id}>
+              <Link href={`/station/${station.id}`}>{station.name}</Link>
+            </li>
+          ))}
         </ul>
       )}
     </div>

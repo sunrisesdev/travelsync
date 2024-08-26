@@ -1,5 +1,13 @@
+import { auth } from '@/auth';
 import ky from 'ky';
 
-export const trwlAPI = ky.create({
-  prefixUrl: 'https://traewelling.de/api/v1',
-});
+export async function getTrwlAPI() {
+  const session = await auth();
+
+  return ky.create({
+    headers: {
+      Authorization: `Bearer ${session?.user.accessToken}`,
+    },
+    prefixUrl: 'https://traewelling.de/api/v1',
+  });
+}
