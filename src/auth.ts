@@ -47,4 +47,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     maxAge: 365 * 24 * 60 * 60,
   },
+  pages: {
+    signIn: '/login',
+  },
+  callbacks: {
+    jwt: async ({ token, account, user }) => {
+      if (user) {
+        token.username = user.username;
+        token.displayName = user.name;
+        // token.id = user.id as number;
+        token.picture = user.image;
+      }
+
+      token.accessToken = account?.access_token || token.accessToken;
+      token.refreshToken = account?.refresh_token || token.refreshToken;
+
+      return token;
+    },
+    session: async ({ session, token, user }) => {
+      //   session.user.accessToken = token.accessToken;
+      //   session.user.refreshToken = token.refreshToken;
+      //   session.user.username = token.username;
+      //   session.user.name = token.displayName;
+      //   session.user.id = token.id;
+      session.user.image = token.picture;
+
+      return session;
+    },
+    redirect: () => '/',
+  },
 });
