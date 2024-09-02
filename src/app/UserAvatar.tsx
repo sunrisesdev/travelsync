@@ -17,8 +17,8 @@ export default async function UserAvatar() {
       {stations?.length && (
         <ul>
           {stations?.map((station) => (
-            <li key={station.id}>
-              <Link href={`/station/${station.id}`}>{station.name}</Link>
+            <li key={station.trwlId}>
+              <Link href={`/station/${station.trwlId}`}>{station.name}</Link>
             </li>
           ))}
         </ul>

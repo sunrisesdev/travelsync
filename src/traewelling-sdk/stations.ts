@@ -1,4 +1,5 @@
 import { getTrwlAPI } from './api';
+import { transformTrwlStation } from './transformers/transformStation';
 import type { TrwlAPIResponse, TrwlStation } from './types/traewelling';
 
 export async function findStationByLocation(
@@ -17,9 +18,9 @@ export async function findStationByLocation(
       })
       .json<TrwlAPIResponse<TrwlStation>>();
 
-    return data;
+    return transformTrwlStation(data);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -31,9 +32,9 @@ export async function findStationsByQuery(query: string) {
       .get(`trains/stations/autocomplete/${sanitizedQuery}`)
       .json<TrwlAPIResponse<TrwlStation[]>>();
 
-    return data;
+    return data.map(transformTrwlStation);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -43,8 +44,8 @@ export async function getLastStations() {
       .get('trains/station/history')
       .json<TrwlAPIResponse<TrwlStation[]>>();
 
-    return data;
+    return data.map(transformTrwlStation);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

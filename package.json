@@ -11,16 +11,21 @@
   "dependencies": {
     "babel-plugin-react-compiler": "0.0.0-experimental-48eb8f4-20240822",
     "clsx": "2.1.1",
+    "color-convert": "2.0.1",
     "ky": "^1.7.1",
+    "lz-string": "1.5.0",
     "next": "15.0.0-canary.130",
     "next-auth": "^5.0.0-beta.20",
     "normalize.css": "8.0.1",
+    "papaparse": "5.4.1",
     "react": "19.0.0-rc-eb3ad065-20240822",
     "react-dom": "19.0.0-rc-eb3ad065-20240822",
     "sass": "1.77.8"
   },
   "devDependencies": {
+    "@types/color-convert": "2.0.3",
     "@types/node": "22.5.0",
+    "@types/papaparse": "5.3.14",
     "@types/react": "18.3.4",
     "@types/react-dom": "18.3.0",
     "eslint": "8.57.0",

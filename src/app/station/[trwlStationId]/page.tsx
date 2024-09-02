@@ -1,4 +1,5 @@
 import { getDeparturesFromStation } from '@/traewelling-sdk/trips';
+import { compressToEncodedURIComponent } from 'lz-string';
 import Link from 'next/link';
 
 export default async function StationPage({
@@ -16,16 +17,22 @@ export default async function StationPage({
     <main>
       {response.trips.map((trip) => {
         const searchParams = new URLSearchParams();
-        searchParams.set('at', trip.plannedWhen);
-        searchParams.set('from', trip.station.ibnr.toString());
+        searchParams.set(
+          'at',
+          trip.departure?.planned ?? trip.departure?.actual ?? ''
+        );
+        searchParams.set('from', trip.departureStation?.ibnr?.toString() ?? '');
         searchParams.set('line', trip.line.name);
+        searchParams.set('operator', trip.line.operator.id);
+
+        const tsTripId = compressToEncodedURIComponent(trip.hafasId!);
 
         return (
           <Link
-            href={`/trip/${encodeURIComponent(trip.tripId)}?${searchParams.toString()}`}
-            key={trip.tripId}
+            href={`/trip/${tsTripId}?${searchParams.toString()}`}
+            key={trip.hafasId}
           >
-            <div>{trip.direction}</div>
+            <div>{trip.designation}</div>
           </Link>
         );
       })}

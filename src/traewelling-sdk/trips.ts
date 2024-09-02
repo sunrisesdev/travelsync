@@ -1,4 +1,10 @@
+import { createLineAppearanceDataset } from '@/parcels/line-apperance/createLineApperanceDataset';
 import { getTrwlAPI } from './api';
+import { transformTrwlStation } from './transformers/transformStation';
+import {
+  transformHAFASTrip,
+  transformTrwlTrip,
+} from './transformers/transformTrip';
 import type { HAFASTrip } from './types/hafas';
 import type {
   TrwlAPIResponse,
@@ -33,7 +39,10 @@ export async function getDeparturesFromStation(
   }
 
   try {
-    const { data: departures, meta } = await (
+    const {
+      data: departures,
+      meta: { station, times },
+    } = await (
       await getTrwlAPI()
     )
       .get(`station/${trwlStationId}/departures`, {
@@ -41,16 +50,28 @@ export async function getDeparturesFromStation(
       })
       .json<DeparturesResponse>();
 
-    return { trips: departures, meta };
+    const transformed = {
+      meta: { station: transformTrwlStation(station), times },
+      trips: departures.map(transformHAFASTrip),
+    };
+
+    const { getAppearanceForLine } = await createLineAppearanceDataset();
+
+    transformed.trips.forEach((trip) => {
+      trip.line.appearance = getAppearanceForLine(trip.line);
+    });
+
+    return transformed;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
 export async function getTrip(
   hafasTripId: string,
   lineName: string,
-  originStationEvaId: string
+  originStationEvaId: string,
+  operatorId: string = ''
 ) {
   try {
     const { data } = await (
@@ -65,8 +86,15 @@ export async function getTrip(
       })
       .json<TrwlAPIResponse<TrwlTrip>>();
 
-    return data;
+    const transformed = transformTrwlTrip(data);
+
+    const { getAppearanceForLine } = await createLineAppearanceDataset();
+
+    transformed.line.operator.id = operatorId;
+    transformed.line.appearance = getAppearanceForLine(transformed.line);
+
+    return transformed;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
