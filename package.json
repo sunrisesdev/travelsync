@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "1.1.1",
     "babel-plugin-react-compiler": "0.0.0-experimental-48eb8f4-20240822",
     "clsx": "2.1.1",
     "color-convert": "2.0.1",
